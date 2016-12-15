@@ -2,7 +2,7 @@ require 'syro'
 require_relative '../service/anagrams'
 
 # Guideline: Return an empty array when possible for sad cases
-class AnagramsREST < Syro::Deck
+class AnagramsAdapter < Syro::Deck
   def self._ensure_anagrams
     unless @anagrams
       raise "Need to add words before we can make anagram magic."
@@ -24,7 +24,7 @@ class AnagramsREST < Syro::Deck
   end
 
   def self.delete_all
-    @anagrams = Anagrams.new
+    @anagrams = nil
   end
 
   def self.delete_word(word)
