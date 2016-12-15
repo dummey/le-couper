@@ -36,9 +36,15 @@ class TestServer < Minitest::Test
   def test_endpoint_GET_sad
     word = "read"
 
-    @server.get("/anagrams/#{word}.json") do |res|
-      assert_equal 200, res.status, 'GET endpoint exists'
-      assert_equal ["dare", "dear", "read"], JSON.parse(res.body)["anagrams"], "Checking anagram lookup result"
+    [
+      "/anagrams/.json",
+      "/anagrams/foo.xml",
+      "/anagrams/foo",
+      "/anagrams/foo."
+    ].each do |path|
+      @server.get(path) do |res|
+        assert_equal 400, res.status, 'GET endpoint exists'
+      end
     end
   end
 

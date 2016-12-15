@@ -19,12 +19,13 @@ Web = Syro.new(AnagramsAdapter) do
         word = $1
         format = $2
 
-        if format.casecmp("json") == 0
+        if word && format && format.casecmp("json") == 0
           res.write(
             {"anagrams" => AnagramsAdapter.find_anagram_for(word)}.to_json
           )
         else 
-          res.write("Provided format is invalide, .json is supported")
+          res.status = 400
+          res.write("Provided format is invalid, .json is supported")
         end
       end
     end
@@ -35,12 +36,14 @@ Web = Syro.new(AnagramsAdapter) do
       body = JSON.parse(req.body.read)
       word_list = body["words"]
 
-      unless word_list
+      if word_list
+        AnagramsAdapter.add_words(word_list)
+        res.write "Added #{word_list} to anagram database"
+      else
+        res.status = 400
         res.write("Please provide word list in the json format of `{ 'word' => [] }`")
       end
 
-      AnagramsAdapter.add_words(word_list)
-      res.write "Added #{word_list} to anagram database"
     end
 
     delete do 
