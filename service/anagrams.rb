@@ -46,8 +46,10 @@ class Anagrams
     @anagrams[sorted_word].sort!
   end
 
-  def find_anagram_from(word, limit = nil)
+  def find_anagram_from(word, options = {})
     return [] if word.length > @max_length
+
+    limit = options[:limit]
     return [] if limit && limit < 1
 
     results = @anagrams[_sort_word(word)]
@@ -58,6 +60,4 @@ class Anagrams
       results
     end
   end
-
-
 end

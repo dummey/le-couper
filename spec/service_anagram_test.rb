@@ -41,10 +41,10 @@ class TestServiceAnagram < Minitest::Test
     anagrams = self._setup
     expected_results = ["dare", "dear", "read"]
 
-    assert_equal expected_results[0..0], anagrams.find_anagram_from("read", 1)
-    assert_equal expected_results[0..1], anagrams.find_anagram_from("read", 2)
-    assert_equal expected_results, anagrams.find_anagram_from("read", 3)
-    assert_equal expected_results, anagrams.find_anagram_from("read", 10)
+    assert_equal expected_results[0..0], anagrams.find_anagram_from("read", limit: 1)
+    assert_equal expected_results[0..1], anagrams.find_anagram_from("read", limit: 2)
+    assert_equal expected_results, anagrams.find_anagram_from("read", limit: 3)
+    assert_equal expected_results, anagrams.find_anagram_from("read", limit: 10)
   end
 
   ## SAD CASES
