@@ -22,30 +22,31 @@ class TestServer < Minitest::Test
   def test_endpoint_GET
     word = "happy"
 
-    res = @server.get("/anagrams/#{word}.json")
-
-    assert_equal 200, res.status, 'GET endpoint exists'
+    @server.get("/anagrams/#{word}.json") do |res|
+      assert_equal 200, res.status, 'GET endpoint exists'
+    end
     # assert_equal [word], res.body, 'GET recieved the correct word'
   end
 
   def test_endpoint_POST
     body = {"words" => ["read", "dear", "dare"] }
 
-    res = @server.post("/words.json", body)
-
-    assert_equal 200, res.status, 'POST endpoint exists'
+    @server.post("/words.json", body) do |res|
+      assert_equal 200, res.status, 'POST endpoint exists'
+    end
   end
 
   def test_endpoint_DELETE_single
     word = "sad"
-    res = @server.delete("/words/#{word}.json")
-
-    assert_equal 200, res.status, 'DELETE single endpoint exists'
+    
+    @server.delete("/words/#{word}.json") do |res|
+      assert_equal 200, res.status, 'DELETE single endpoint exists'
+    end
   end
 
   def test_endpoint_DELETE_all
-    res = @server.delete("/words.json")
-
-    assert_equal 200, res.status, "DELETE all endpoint exists"
+    @server.delete("/words.json") do |res|
+      assert_equal 200, res.status, "DELETE all endpoint exists"
+    end
   end
 end
