@@ -7,8 +7,20 @@ Dir[GLOB].each { |file| require file }
 
 # Create thin web layer
 Web = Syro.new(AnagramsREST) do
-  get do
-    res.write "hello, world"
+  on "anagrams" do 
+    on :word do 
+      get do
+        res.write inbox[:word]
+      end
+    end
+  end
+
+  post do 
+
+  end
+
+  delete do 
+
   end
 end
 
