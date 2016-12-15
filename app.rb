@@ -22,8 +22,13 @@ Web = Syro.new(AnagramsREST) do
     end
   end
 
-  delete do 
-
+#/words/:word.json
+  on "words" do 
+    on :word do
+      delete do 
+        res.write "delete"
+      end
+    end
   end
 end
 
