@@ -10,7 +10,8 @@ Web = Syro.new(AnagramsREST) do
   on "anagrams" do 
     on :word do 
       get do
-        res.write inbox[:word]
+        word = index["word"]
+        res.write AnagramsREST.find_word(word)
       end
     end
   end
@@ -26,7 +27,6 @@ Web = Syro.new(AnagramsREST) do
     end
   end
 
-#/words/:word.json
   on "words" do 
     on :word do
       delete do 
