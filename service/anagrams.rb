@@ -59,6 +59,9 @@ class Anagrams
 
     results = @anagrams[_sort_word(word)]
 
+    # Remove self from results
+    results = results.reject {|w| w == word }
+
     # Process options
     if limit
       results = results[0..limit-1]

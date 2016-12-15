@@ -21,21 +21,19 @@ class TestDeckAnagram < Minitest::Test
   end
 
   def test_find_anagrams
-    assert_equal ["act", "cat"], AnagramsAdapter.find_anagram_for("cat")
+    assert_equal ["act"], AnagramsAdapter.find_anagram_for("cat")
   end
 
   def test_delete_anagrams
     AnagramsAdapter.delete_word("act")
 
-    assert_equal ["cat"], AnagramsAdapter.find_anagram_for("cat")
+    assert_equal [], AnagramsAdapter.find_anagram_for("cat")
   end
 
   def test_delete_all_anagrams
     AnagramsAdapter.delete_all
 
-    assert_raises RuntimeError do
-      AnagramsAdapter.find_anagram_for("cat")
-    end
+    assert_equal [], AnagramsAdapter.find_anagram_for("cat")
   end
 
 end

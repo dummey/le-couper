@@ -24,18 +24,16 @@ class TestServer < Minitest::Test
     @server.delete("/words.json")
   end
 
-  def test_endpoint_GET_happy
+  def test_GET_anagrams_happy
     word = "read"
 
     @server.get("/anagrams/#{word}.json") do |res|
       assert_equal 200, res.status, 'GET endpoint exists'
-      assert_equal ["dare", "dear", "read"], JSON.parse(res.body)["anagrams"], "Checking anagram lookup result"
+      assert_equal ["dare", "dear"], JSON.parse(res.body)["anagrams"], "Checking anagram lookup result"
     end
   end
 
-  def test_endpoint_GET_sad
-    word = "read"
-
+  def test_GET_anagrams_sad
     [
       "/anagrams/.json",
       "/anagrams/foo.xml",

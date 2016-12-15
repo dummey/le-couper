@@ -20,6 +20,7 @@ Web = Syro.new(AnagramsAdapter) do
         format = $2
 
         if word && format && format.casecmp("json") == 0
+          res.status = 200
           res.write(
             {"anagrams" => AnagramsAdapter.find_anagram_for(word)}.to_json
           )
@@ -38,6 +39,7 @@ Web = Syro.new(AnagramsAdapter) do
 
       if word_list
         AnagramsAdapter.add_words(word_list)
+        res.status = 201
         res.write "Added #{word_list} to anagram database"
       else
         res.status = 400
@@ -48,7 +50,7 @@ Web = Syro.new(AnagramsAdapter) do
 
     delete do 
       AnagramsAdapter.delete_all
-      res.write "All entries have been deleted."
+      res.status = 204
     end
   end
 

@@ -24,7 +24,7 @@ class AnagramsAdapter < Syro::Deck
   end
 
   def self.delete_all
-    @anagrams = nil
+    @anagrams = Anagrams.new
   end
 
   def self.delete_word(word)
