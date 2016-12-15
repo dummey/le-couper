@@ -2,7 +2,7 @@ class Anagrams
   def initialize()
     # defaults the value for new hash entrties as an empty array
     @anagrams = Hash.new { |h, k| h[k] = [] }
-
+    @max_length = 0
     self
   end
 
@@ -12,6 +12,18 @@ class Anagrams
 
   def sorted_words 
     @anagrams.keys
+  end
+
+  def _update_max_legth(word)
+    @max_length = word.length > @max_length ? word.length : @max_length
+  end
+
+  def max_length
+    @max_length
+  end
+
+  def _sort_word(word)
+    word.chars.sort.join
   end
 
   def add_words(word_list)
@@ -25,9 +37,20 @@ class Anagrams
   def add_word(word)
     # Forcing all characters into lower case. 
     word = word.downcase
+    sorted_word = _sort_word(word)
 
-    sorted_word = word.chars.sort.join
+    self._update_max_legth(word)
 
     @anagrams[sorted_word] << word
+    # Sorting each insert to help with determinism independent of insert order
+    @anagrams[sorted_word].sort!
   end
+
+  def find_anagram_from(word)
+    return [] if word.length > @max_length
+
+    @anagrams[_sort_word(word)]
+  end
+
+
 end
