@@ -23,7 +23,7 @@ class Anagrams
   end
 
   def _sort_word(word)
-    word.chars.sort.join
+    word.downcase.chars.sort.join
   end
 
   def add_words(word_list)
@@ -36,7 +36,7 @@ class Anagrams
 
   def add_word(word)
     # Forcing all characters into lower case for anagram form.
-    sorted_word = _sort_word(word.downcase)
+    sorted_word = _sort_word(word)
 
     self._update_max_legth(word)
 
@@ -45,7 +45,7 @@ class Anagrams
     @anagrams[sorted_word].sort!
   end
 
-  def find_anagram_from(word, options = {})
+  def find_anagram_for(word, options = {})
     # Security check to prevent overloading
     return [] if word.length > @max_length
 
@@ -55,7 +55,6 @@ class Anagrams
 
     exclude_pronouns = options[:exclude_pronouns]
 
-
     results = @anagrams[_sort_word(word)]
 
     # Process options
@@ -64,9 +63,14 @@ class Anagrams
     end
 
     if exclude_pronouns
-      results = results.delete_if {|word| word == word.capitalize}
+      results = results.reject {|word| word == word.capitalize}
     end
 
     results
+  end
+
+  def delete_word(word)
+    sorted_word = self._sort_word(word)
+    @anagrams[sorted_word].delete(word)
   end
 end
