@@ -31,6 +31,11 @@ class TestServer < Minitest::Test
       assert_equal 200, res.status, 'GET endpoint exists'
       assert_equal ["dare", "dear"], JSON.parse(res.body)["anagrams"], "Checking anagram lookup result"
     end
+
+    @server.get("/anagrams/#{word}.json?limit=1") do |res|
+      assert_equal 200, res.status, 'GET endpoint exists'
+      assert_equal ["dare"], JSON.parse(res.body)["anagrams"], "Checking anagram lookup result"
+    end
   end
 
   def test_GET_anagrams_sad

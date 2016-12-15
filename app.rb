@@ -1,8 +1,9 @@
 require 'syro'
 require 'json'
+require 'cgi'
 
 # Path to project components
-GLOB = "./{lib,decks,routes,models,filters,services}/*.rb"
+GLOB = "./{helper,decks,services}/*.rb"
 # Load components
 Dir[GLOB].each { |file| require file }
 
@@ -19,10 +20,23 @@ Web = Syro.new(AnagramsAdapter) do
         word = $1
         format = $2
 
+        # parse options
+        options = CGI::parse(req.query_string)
+        options = Helpers.symbolize_keys(options)
+
+        # TODO: Find helpers to make this cleaner
+        if options[:limit]
+          options[:limit] = options[:limit][0].to_i
+        end
+
+        if options[:exclude_pronouns]
+          options[:exclude_pronouns] = options[:exclude_pronouns][0] == 'true'
+        end
+
         if word && format && format.casecmp("json") == 0
           res.status = 200
           res.write(
-            {"anagrams" => AnagramsAdapter.find_anagram_for(word)}.to_json
+            {"anagrams" => AnagramsAdapter.find_anagram_for(word, options)}.to_json
           )
         else 
           res.status = 400
@@ -35,6 +49,7 @@ Web = Syro.new(AnagramsAdapter) do
   on "words.json" do 
     post do 
       body = JSON.parse(req.body.read)
+
       word_list = body["words"]
 
       if word_list
