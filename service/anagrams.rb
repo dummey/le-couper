@@ -46,10 +46,17 @@ class Anagrams
     @anagrams[sorted_word].sort!
   end
 
-  def find_anagram_from(word)
+  def find_anagram_from(word, limit = nil)
     return [] if word.length > @max_length
+    return [] if limit && limit < 1
 
-    @anagrams[_sort_word(word)]
+    results = @anagrams[_sort_word(word)]
+    if limit
+      # Being fancy here and using the array wrap around for limits
+      results[0..limit-1]
+    else
+      results
+    end
   end
 
 

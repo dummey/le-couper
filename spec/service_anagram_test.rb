@@ -33,10 +33,18 @@ class TestServiceAnagram < Minitest::Test
   def test_find_anagrams
     anagrams = self._setup
 
-
     assert_equal ["dog", "god"], anagrams.find_anagram_from("dog")
-
     assert_equal ["act", "cat"], anagrams.find_anagram_from("tac")
+  end
+
+  def test_find_anagram_with_limit
+    anagrams = self._setup
+    expected_results = ["dare", "dear", "read"]
+
+    assert_equal expected_results[0..0], anagrams.find_anagram_from("read", 1)
+    assert_equal expected_results[0..1], anagrams.find_anagram_from("read", 2)
+    assert_equal expected_results, anagrams.find_anagram_from("read", 3)
+    assert_equal expected_results, anagrams.find_anagram_from("read", 10)
   end
 
   ## SAD CASES
@@ -54,5 +62,4 @@ class TestServiceAnagram < Minitest::Test
 
     assert_equal [], anagrams.find_anagram_from(silly_word)
   end
-
 end
