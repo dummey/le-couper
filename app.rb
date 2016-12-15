@@ -1,4 +1,5 @@
 require 'syro'
+require 'json'
 
 # Path to project components
 GLOB = "./{lib,decks,routes,models,filters,services}/*.rb"
@@ -6,31 +7,54 @@ GLOB = "./{lib,decks,routes,models,filters,services}/*.rb"
 Dir[GLOB].each { |file| require file }
 
 # Create thin web layer
-Web = Syro.new(AnagramsREST) do
+Web = Syro.new(AnagramsAdapter) do
   on "anagrams" do 
     on :word do 
       get do
-        word = index["word"]
-        res.write AnagramsREST.find_word(word)
+        word = inbox[:word]
+
+        # validate keyword
+        word =~ /(\w+)\.(\w+)/
+
+        word = $1
+        format = $2
+
+        if format.casecmp("json") == 0
+          res.write(
+            {"anagrams" => AnagramsAdapter.find_anagram_for(word)}.to_json
+          )
+        else 
+          res.write("Provided format is invalide, .json is supported")
+        end
       end
     end
   end
 
   on "words.json" do 
     post do 
-      req.params
-      res.write inbox
+      body = JSON.parse(req.body.read)
+      word_list = body["words"]
+
+      unless word_list
+        res.write("Please provide word list in the json format of `{ 'word' => [] }`")
+      end
+
+      AnagramsAdapter.add_words(word_list)
+      res.write "Added #{word_list} to anagram database"
     end
 
     delete do 
-      res.write "delete all"
+      AnagramsAdapter.delete_all
+      res.write "All entries have been deleted."
     end
   end
 
   on "words" do 
     on :word do
       delete do 
-        res.write "delete"
+        word = inbox[:word]
+        AnagramsAdapter.delete_word(word)
+        res.write "#{word} has been deleted."
       end
     end
   end
