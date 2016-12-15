@@ -20,6 +20,10 @@ Web = Syro.new(AnagramsREST) do
       req.params
       res.write inbox
     end
+
+    delete do 
+      res.write "delete all"
+    end
   end
 
 #/words/:word.json
