@@ -40,6 +40,10 @@ class AnagramsAdapter < Syro::Deck
 
     @anagrams.delete_word_and_anagrams(word)
   end
+
+  def self.count
+    @anagrams.words.count
+  end
 end
 
 __END__
