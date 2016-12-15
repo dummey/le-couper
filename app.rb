@@ -12,13 +12,8 @@ Web = Syro.new(AnagramsAdapter) do
   on "anagrams" do 
     on :word do 
       get do
-        word = inbox[:word]
-
-        # validate keyword
-        word =~ /(\w+)\.(\w+)/
-
-        word = $1
-        format = $2
+        path_word = inbox[:word]
+        (word, format) = Helpers.parse_path_word(path_word)
 
         # parse options
         options = CGI::parse(req.query_string)
@@ -72,7 +67,11 @@ Web = Syro.new(AnagramsAdapter) do
   on "words" do 
     on :word do
       delete do 
-        word = inbox[:word]
+        path_word = inbox[:word]
+        (word, format) = Helpers.parse_path_word(path_word)
+
+        # Ignore the format?
+
         AnagramsAdapter.delete_word(word)
         res.write "#{word} has been deleted."
       end
