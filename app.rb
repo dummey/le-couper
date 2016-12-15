@@ -15,8 +15,11 @@ Web = Syro.new(AnagramsREST) do
     end
   end
 
-  post do 
-
+  on "words.json" do 
+    post do 
+      req.params
+      res.write inbox
+    end
   end
 
   delete do 

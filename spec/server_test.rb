@@ -1,57 +1,48 @@
 require "minitest/autorun"
 require_relative "../app.rb"
 
-module ResponseHelper
-  def self.get_status(r)
-    r[0]
+require "rack/test"
+class Driver
+  include Rack::Test::Methods
+
+  def initialize(app)
+    @app = app
   end
 
-  def self.get_header(r)
-
-  end
-
-  def self.get_content(r)
-    r[2]
+  def app
+    @app
   end
 end
 
 class TestServer < Minitest::Test
   def setup
-    @server = App
+    @server = Driver.new(App)
   end
 
   def test_endpoint_GET
     word = "happy"
 
-    params = {
-      "REQUEST_METHOD" => "GET",
-      "PATH_INFO"      => "/anagrams/#{word}.json",
-      "QUERY_STRING"   => "",
-    }
+    res = @server.get("/anagrams/#{word}.json")
 
-    res = @server.call(params)
-
-    assert_equal 200, ResponseHelper.get_status(res), 'GET Endpoint exists'
-    assert_equal [word], ResponseHelper.get_content(res), 'GET recieved the correct word'
+    assert_equal 200, res.status, 'GET Endpoint exists'
+    # assert_equal [word], res.body, 'GET recieved the correct word'
   end
 
   def test_endpoint_POST
-    params = {
-      "REQUEST_METHOD" => "POST",
-      "PATH_INFO"      => "/words.json",
-      "QUERY_STRING"   => "",
-    }
+    body = {"words" => ["read", "dear", "dare"] }
 
-    assert_equal 200, ResponseHelper.get_status(@server.call(params)), 'POST Endpoint exists'
+    res = @server.post("/words.json", body)
+
+    assert_equal 200, res.status, 'POST Endpoint exists'
   end
 
-  def test_endpoint_DELETE
-    params = {
-      "REQUEST_METHOD" => "DELETE",
-      "PATH_INFO"      => "DELETE /words/:word.json",
-      "QUERY_STRING"   => "",
-    }
+  def test_endpoint_DELETE_single
+    res = @server.delete("/words/:word.json")
 
-    assert_equal 200, ResponseHelper.get_status(@server.call(params)), 'DELETE Endpoint exists'
+    assert_equal 200, res.status, 'DELETE Endpoint exists'
+  end
+
+  def test_endpoint_DELETE_all
+
   end
 end
