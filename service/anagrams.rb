@@ -65,7 +65,7 @@ class Anagrams
     end
 
     if exclude_pronouns
-      results = results.reject {|word| word == word.capitalize}
+      results = results.reject {|w| w == w.capitalize}
     end
 
     results
