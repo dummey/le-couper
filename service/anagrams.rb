@@ -43,6 +43,8 @@ class Anagrams
     @anagrams[sorted_word] << word
     # Sorting each insert to help with determinism independent of insert order
     @anagrams[sorted_word].sort!
+
+    self
   end
 
   def find_anagram_for(word, options = {})
@@ -72,5 +74,14 @@ class Anagrams
   def delete_word(word)
     sorted_word = self._sort_word(word)
     @anagrams[sorted_word].delete(word)
+
+    self
+  end
+
+  def delete_word_and_anagrams(word)
+    sorted_word = self._sort_word(word)
+    @anagrams[sorted_word] = []
+
+    self
   end
 end

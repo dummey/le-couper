@@ -59,6 +59,15 @@ class TestServiceAnagram < Minitest::Test
     assert_equal expected_results.sort, anagrams.words.sort
   end
 
+  def test_delete_word_and_anagram
+    anagrams = self._setup
+
+    expected_results = DEFAULT_WORD_LIST.reject {|w| w == "act" || w == "cat"}
+
+    anagrams.delete_word_and_anagrams("cat")
+    assert_equal expected_results.sort, anagrams.words.sort
+  end
+
   ## SAD CASES
 
   def test_find_empty
