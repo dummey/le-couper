@@ -22,6 +22,10 @@ class TestDeckAnagram < Minitest::Test
 
   def test_find_anagrams
     assert_equal ["act"], AnagramsAdapter.find_anagram_for("cat")
+
+    assert_equal ["dare"], AnagramsAdapter.find_anagram_for("read", limit: 1)
+
+    assert_equal [], AnagramsAdapter.find_anagram_for("dog", exclude_pronouns: true)    
   end
 
   def test_delete_anagrams
