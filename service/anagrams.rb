@@ -40,7 +40,7 @@ class Anagrams
 
     self._update_max_legth(word)
 
-    if not @anagrams[sorted_word].bsearch { |w| w == word }
+    if not @anagrams[sorted_word].bsearch { |w| w.eql? word }
       @anagrams[sorted_word] << word
       # Sorting each insert to help with determinism independent of insert order
       @anagrams[sorted_word].sort!

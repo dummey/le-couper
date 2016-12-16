@@ -17,7 +17,7 @@ end
 class TestREST < Minitest::Test
   def setup
     @server = Driver.new(App)
-    @server.post("/words.json", {"words" => ["read", "dear", "dare"] }.to_json)
+    @server.post("/words.json", {"words" => ["read", "dear", "dare", "bat", "tab"] }.to_json)
   end
 
   def teardown
@@ -54,6 +54,7 @@ class TestREST < Minitest::Test
   def test_add_additional_words
     @server.post("/words.json", {"words" => ["bat", "tab"]}.to_json)
 
+    # This actually also catches the problem of StringIO being passed in
     @server.get("/anagrams/tab.json") do |res|
       assert_equal ["bat"], JSON.parse(res.body)["anagrams"]
     end 
@@ -71,13 +72,25 @@ class TestREST < Minitest::Test
     end
 
     @server.get("/anagrams/dear.json") do |res|
-      assert_equal 200, res.status, 'GET endpoint exists'
+      assert_equal 200, res.status
       assert_equal ["read"], JSON.parse(res.body)["anagrams"]
     end
   end
 
   def test_delete_word_and_anagrams
+    @server.delete("/words/dare.json?delete_anagrams=true") do |res|
+      assert_equal 200, res.status
+    end
 
+    @server.get("/anagrams/dear.json") do |res|
+      assert_equal 200, res.status
+      assert_equal [], JSON.parse(res.body)["anagrams"]
+    end
+
+    @server.get("/anagrams/bat.json") do |res|
+      assert_equal 200, res.status
+      assert_equal ["tab"], JSON.parse(res.body)["anagrams"]
+    end
   end
 
   def test_delete_all

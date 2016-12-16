@@ -12,4 +12,12 @@ module Helpers
 
     [word, format]
   end
+
+  def self.sanitize_word_list(word_list)
+    word_list.map { |w| w.to_s }
+  end
+
+  def self.sanitize_word(word)
+    word.to_s
+  end
 end

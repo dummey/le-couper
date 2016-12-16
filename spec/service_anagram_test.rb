@@ -28,7 +28,7 @@ class TestServiceAnagram < Minitest::Test
     anagrams = self._setup
     current_size = anagrams.words.count
 
-    anagrams.add_words(["cat"])
+    anagrams.add_words(["cat", "cat", "dog"])
 
     assert_equal current_size, anagrams.words.count
   end

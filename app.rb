@@ -47,9 +47,9 @@ Web = Syro.new(AnagramsAdapter) do
       body = JSON.parse(req.body.read)
 
       word_list = body["words"]
-      word_list = Helpers.sanitize_word_list(word_list)
 
       if word_list
+        word_list = Helpers.sanitize_word_list(word_list) 
         AnagramsAdapter.add_words(word_list)
         res.status = 201
         res.write "Added #{word_list} to anagram database"
