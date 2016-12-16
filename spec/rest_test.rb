@@ -14,7 +14,7 @@ class Driver
   end
 end
 
-class TestServer < Minitest::Test
+class TestREST < Minitest::Test
   def setup
     @server = Driver.new(App)
     @server.post("/words.json", {"words" => ["read", "dear", "dare"] }.to_json)
