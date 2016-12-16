@@ -55,7 +55,6 @@ Web = Syro.new(AnagramsAdapter) do
         res.status = 400
         res.write("Please provide word list in the json format of `{ 'word' => [] }`")
       end
-
     end
 
     delete do 
