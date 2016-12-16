@@ -52,7 +52,7 @@ class TestREST < Minitest::Test
   end
 
   def test_add_additional_words
-    @server.post("/words.json", {"words" => ["bat", "tab"]}.to_json)
+    @server.post("/words.json", {"words" => ["read", "dear", "dare", "bat", "tab"]}.to_json)
 
     # This actually also catches the problem of StringIO being passed in
     @server.get("/anagrams/tab.json") do |res|
