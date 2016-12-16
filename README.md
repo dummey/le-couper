@@ -1,7 +1,7 @@
 ## Running
 
-Running vendor tests: `rake vendor_test`
+`rake vendor_test` to run vendor tests.
 
-Running tests: 'rake test'
+`rake test` to run tests. 
 
-Running server: 'rake server'
+`rake server` to start server.
