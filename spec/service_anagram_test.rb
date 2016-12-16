@@ -24,6 +24,15 @@ class TestServiceAnagram < Minitest::Test
     assert_equal DEFAULT_WORD_LIST.count + additional_words.count, anagrams.words.count
   end
 
+  def test_adding_duplicate_word
+    anagrams = self._setup
+    current_size = anagrams.words.count
+
+    anagrams.add_words(["cat"])
+
+    assert_equal current_size, anagrams.words.count
+  end
+
   def test_find_anagrams
     anagrams = self._setup
 
