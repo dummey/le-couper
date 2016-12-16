@@ -51,25 +51,39 @@ class TestServer < Minitest::Test
     end
   end
 
-  # def test_endpoint_POST
-  #   body = {"words" => ["read", "dear", "dare"] }
+  def test_add_additional_words
+    @server.post("/words.json", {"words" => ["bat", "tab"]}.to_json)
 
-  #   @server.post("/words.json", body) do |res|
-  #     assert_equal 200, res.status, 'POST endpoint exists'
-  #   end
-  # end
+    @server.get("/anagrams/tab.json") do |res|
+      assert_equal ["bat"], JSON.parse(res.body)["anagrams"]
+    end 
+  end
 
-  # def test_endpoint_DELETE_single
-  #   word = "sad"
-    
-  #   @server.delete("/words/#{word}.json") do |res|
-  #     assert_equal 200, res.status, 'DELETE single endpoint exists'
-  #   end
-  # end
+  def test_add_additional_words_sad
+    @server.post("/words.json", {"huh" => "thing"}.to_json) do |res|
+      assert_equal 400, res.status
+    end
+  end
 
-  # def test_endpoint_DELETE_all
-  #   @server.delete("/words.json") do |res|
-  #     assert_equal 200, res.status, "DELETE all endpoint exists"
-  #   end
-  # end
+  def test_delete_single_word
+    @server.delete("/words/dare.json") do |res|
+      assert_equal 200, res.status
+    end
+
+    @server.get("/anagrams/dear.json") do |res|
+      assert_equal 200, res.status, 'GET endpoint exists'
+      assert_equal ["read"], JSON.parse(res.body)["anagrams"]
+    end
+  end
+
+  def test_delete_word_and_anagrams
+
+  end
+
+  def test_delete_all
+    @server.delete("/words.json") do |res|
+      assert_equal 204, res.status
+    end
+
+  end
 end
