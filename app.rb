@@ -14,6 +14,7 @@ Web = Syro.new(AnagramsAdapter) do
       get do
         path_word = inbox[:word]
         (word, format) = Helpers.parse_path_word(path_word)
+        word = Helpers.sanitize_word(word)
 
         # parse options
         options = CGI::parse(req.query_string)
@@ -46,6 +47,7 @@ Web = Syro.new(AnagramsAdapter) do
       body = JSON.parse(req.body.read)
 
       word_list = body["words"]
+      word_list = Helpers.sanitize_word_list(word_list)
 
       if word_list
         AnagramsAdapter.add_words(word_list)
@@ -68,10 +70,19 @@ Web = Syro.new(AnagramsAdapter) do
       delete do 
         path_word = inbox[:word]
         (word, format) = Helpers.parse_path_word(path_word)
+        word = Helpers.sanitize_word(word)
 
         # Ignore the format?
 
-        AnagramsAdapter.delete_word(word)
+        # Check for delete_anagrams
+        options = CGI::parse(req.query_string)
+        options = Helpers.symbolize_keys(options)
+
+        if options[:delete_anagrams] && options[:delete_anagrams][0] == 'true'
+          AnagramsAdapter.delete_word_and_anagrams(word)
+        else
+          AnagramsAdapter.delete_word(word)
+        end
         res.write "#{word} has been deleted."
       end
     end
