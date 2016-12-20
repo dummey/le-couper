@@ -48,8 +48,18 @@ class AnagramsAdapter < Syro::Deck
 
   def self.stats
     self._ensure_anagrams
-    
+
     AnagramsPlus.stats(@anagrams.words)
+  end
+
+  def self.assert_are_anagrams(word1, word2)
+    self._ensure_anagrams
+
+    if @anagrams.words.include?(word1) and @anagrams.words.include?(word2)
+      self.find_anagram_for(word1).include?(word2)
+    else
+      false
+    end
   end
 end
 

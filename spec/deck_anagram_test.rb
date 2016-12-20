@@ -50,4 +50,11 @@ class TestDeckAnagram < Minitest::Test
     expected = {:word_count=>7, :min=>3, :max=>4, :average=>3.4285714285714284, :median=>3}
     assert_equal expected, AnagramsAdapter.stats
   end
+
+  def test_assert_are_anagrams
+    assert_equal true, AnagramsAdapter.assert_are_anagrams("dare", "dear")
+    assert_equal false, AnagramsAdapter.assert_are_anagrams("dare", "cat")
+    assert_equal false, AnagramsAdapter.assert_are_anagrams("not_a_word", "dear")
+  end
+
 end
