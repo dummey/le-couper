@@ -17,7 +17,7 @@ end
 class TestREST < Minitest::Test
   def setup
     @server = Driver.new(App)
-    @server.post("/words.json", {"words" => ["read", "dear", "dare", "bat", "tab"] }.to_json)
+    @server.post("/words.json", {"words" => ["read", "dear", "dare", "bat", "tab", "dog", "God"] }.to_json)
   end
 
   def teardown
@@ -35,6 +35,19 @@ class TestREST < Minitest::Test
     @server.get("/anagrams/#{word}.json?limit=1") do |res|
       assert_equal 200, res.status, 'GET endpoint exists'
       assert_equal ["dare"], JSON.parse(res.body)["anagrams"], "Checking anagram lookup result"
+    end
+  end
+
+  def test_GET_anagram_no_pronouns
+
+    @server.get("/anagrams/dog.json?exclude_pronouns=true") do |res|
+      assert_equal 200, res.status, 'GET endpoint exists'
+      assert_equal [], JSON.parse(res.body)["anagrams"]
+    end
+
+    @server.get("/anagrams/dog.json?exclude_pronouns=false") do |res|
+      assert_equal 200, res.status, 'GET endpoint exists'
+      assert_equal ["God"], JSON.parse(res.body)["anagrams"]
     end
   end
 
@@ -103,7 +116,7 @@ class TestREST < Minitest::Test
     @server.get("/stats.json") do |res|
       assert_equal 200, res.status
 
-      expected = {"word_count"=>5, "min"=>3, "max"=>4, "average"=>3.6, "median"=>3}
+      expected = {"word_count"=>7, "min"=>3, "max"=>4, "average"=>3.4285714285714284, "median"=>3}
 
       assert_equal expected, JSON.parse(res.body)
     end
