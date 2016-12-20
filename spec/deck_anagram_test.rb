@@ -46,4 +46,8 @@ class TestDeckAnagram < Minitest::Test
     assert_equal [], AnagramsAdapter.find_anagram_for("cat")
   end
 
+  def test_stats
+    expected = {:word_count=>7, :min=>3, :max=>4, :average=>3.4285714285714284, :median=>3}
+    assert_equal expected, AnagramsAdapter.stats
+  end
 end

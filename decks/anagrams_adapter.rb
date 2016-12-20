@@ -1,5 +1,6 @@
 require 'syro'
 require_relative '../service/anagrams'
+require_relative '../service/anagrams_plus'
 
 # Guideline: Return an empty array when possible for sad cases
 class AnagramsAdapter < Syro::Deck
@@ -43,6 +44,10 @@ class AnagramsAdapter < Syro::Deck
 
   def self.count
     @anagrams.words.count
+  end
+
+  def self.stats
+    AnagramsPlus.stats(@anagrams.words)
   end
 end
 
