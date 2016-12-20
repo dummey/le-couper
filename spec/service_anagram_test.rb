@@ -36,27 +36,27 @@ class TestServiceAnagram < Minitest::Test
   def test_find_anagrams
     anagrams = self._setup
 
-    assert_equal ["God"], anagrams.find_anagram_for("dog")
-    assert_equal ["act", "cat"], anagrams.find_anagram_for("tac")
+    assert_equal ["God"], anagrams.find_anagrams_for("dog")
+    assert_equal ["act", "cat"], anagrams.find_anagrams_for("tac")
   end
 
   def test_find_anagram_with_limit
     anagrams = self._setup
     expected_results = ["dare", "dear", "read"]
 
-    assert_equal expected_results[0..0], anagrams.find_anagram_for("read", limit: 1)
-    assert_equal expected_results[0..1], anagrams.find_anagram_for("read", limit: 2)
-    assert_equal ["dare", "dear"], anagrams.find_anagram_for("read", limit: 3)
-    assert_equal ["dare", "dear"], anagrams.find_anagram_for("read", limit: 10)
-    assert_equal [], anagrams.find_anagram_for("read", limit: -10)
-    # assert_raises "comparison of String with 1", anagrams.find_anagram_for("read", limit: "10")
+    assert_equal expected_results[0..0], anagrams.find_anagrams_for("read", limit: 1)
+    assert_equal expected_results[0..1], anagrams.find_anagrams_for("read", limit: 2)
+    assert_equal ["dare", "dear"], anagrams.find_anagrams_for("read", limit: 3)
+    assert_equal ["dare", "dear"], anagrams.find_anagrams_for("read", limit: 10)
+    assert_equal [], anagrams.find_anagrams_for("read", limit: -10)
+    # assert_raises "comparison of String with 1", anagrams.find_anagrams_for("read", limit: "10")
   end
 
   def test_find_anagram_with_pronouns
     anagrams = self._setup
 
-    assert_equal ["God"], anagrams.find_anagram_for("dog", exclude_pronouns: false)
-    assert_equal [], anagrams.find_anagram_for("dog", exclude_pronouns: true)
+    assert_equal ["God"], anagrams.find_anagrams_for("dog", exclude_pronouns: false)
+    assert_equal [], anagrams.find_anagrams_for("dog", exclude_pronouns: true)
   end
 
   def test_delete_word
@@ -82,7 +82,7 @@ class TestServiceAnagram < Minitest::Test
   def test_find_empty
     anagrams = self._setup
 
-    assert_equal [], anagrams.find_anagram_for("")
+    assert_equal [], anagrams.find_anagrams_for("")
   end
 
   def test_find_too_big
@@ -90,7 +90,7 @@ class TestServiceAnagram < Minitest::Test
 
     silly_word = "a" * 100000
 
-    assert_equal [], anagrams.find_anagram_for(silly_word)
+    assert_equal [], anagrams.find_anagrams_for(silly_word)
   end
 
   def test_delete_non_existent_word

@@ -18,10 +18,10 @@ class AnagramsAdapter < Syro::Deck
     self
   end
 
-  def self.find_anagram_for(word, options = {})
+  def self.find_anagrams_for(word, options = {})
     self._ensure_anagrams
 
-    @anagrams.find_anagram_for(word, options)
+    @anagrams.find_anagrams_for(word, options)
   end
 
   def self.delete_all
@@ -56,7 +56,7 @@ class AnagramsAdapter < Syro::Deck
     self._ensure_anagrams
 
     if @anagrams.words.include?(word1) and @anagrams.words.include?(word2)
-      self.find_anagram_for(word1).include?(word2)
+      self.find_anagrams_for(word1).include?(word2)
     else
       false
     end

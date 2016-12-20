@@ -55,7 +55,7 @@ class Anagrams
     self
   end
 
-  def find_anagram_for(word, options = {})
+  def find_anagrams_for(word, options = {})
     # Security check to prevent overloading
     return [] if word.length > @max_length
 

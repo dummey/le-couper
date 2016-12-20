@@ -32,7 +32,7 @@ Web = Syro.new(AnagramsAdapter) do
         if word && format && format.casecmp("json") == 0
           res.status = 200
           res.write(
-            {"anagrams" => AnagramsAdapter.find_anagram_for(word, options)}.to_json
+            {"anagrams" => AnagramsAdapter.find_anagrams_for(word, options)}.to_json
           )
         else 
           res.status = 400
