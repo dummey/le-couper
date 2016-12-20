@@ -69,7 +69,7 @@ Web = Syro.new(AnagramsAdapter) do
     on :word do
       delete do 
         path_word = inbox[:word]
-        (word, format) = Helpers.parse_path_word(path_word)
+        (word, _) = Helpers.parse_path_word(path_word)
         word = Helpers.sanitize_word(word)
 
         # Ignore the format?
@@ -86,6 +86,10 @@ Web = Syro.new(AnagramsAdapter) do
         res.write "#{word} has been deleted."
       end
     end
+  end
+
+  on "stats.json" do 
+    res.write AnagramsAdapter.stats.to_json
   end
 end
 

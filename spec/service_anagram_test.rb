@@ -1,7 +1,7 @@
 require "minitest/autorun"
 require_relative "../service/anagrams"
 
-DEFAULT_WORD_LIST = ["cat", "act", "dog", "God", "read", "dear", "dare"]
+DEFAULT_WORD_LIST ||= ["cat", "act", "dog", "God", "read", "dear", "dare"]
 
 class TestServiceAnagram < Minitest::Test
 

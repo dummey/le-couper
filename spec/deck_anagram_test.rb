@@ -1,7 +1,7 @@
 require "minitest/autorun"
 require_relative "../decks/anagrams_adapter"
 
-DEFAULT_WORD_LIST = ["cat", "act", "dog", "God", "read", "dear", "dare"]
+DEFAULT_WORD_LIST ||= ["cat", "act", "dog", "God", "read", "dear", "dare"]
 
 class TestDeckAnagram < Minitest::Test
 

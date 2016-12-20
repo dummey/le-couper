@@ -97,6 +97,15 @@ class TestREST < Minitest::Test
     @server.delete("/words.json") do |res|
       assert_equal 204, res.status
     end
+  end
 
+  def test_stats
+    @server.get("/stats.json") do |res|
+      assert_equal 200, res.status
+
+      expected = {"word_count"=>5, "min"=>3, "max"=>4, "average"=>3.6, "median"=>3}
+
+      assert_equal expected, JSON.parse(res.body)
+    end
   end
 end

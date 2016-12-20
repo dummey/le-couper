@@ -47,6 +47,8 @@ class AnagramsAdapter < Syro::Deck
   end
 
   def self.stats
+    self._ensure_anagrams
+    
     AnagramsPlus.stats(@anagrams.words)
   end
 end
